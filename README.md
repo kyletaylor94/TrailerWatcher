@@ -1,5 +1,5 @@
 #Features:
-#🔍 Explore Current Movies:
+# 🔍 Explore Current Movies:
 
 Access up-to-date information on the latest releases.
 Stay informed about the hottest films in theaters.
