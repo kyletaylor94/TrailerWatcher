@@ -8,18 +8,16 @@
 import Foundation
 
 struct YoutubeSearchResponse: Codable {
-  //  var id: Int
     let items: [VideoElement]
 }
 
 struct VideoElement: Codable {
- //   var id: Int
     var id: VideoElementID
 }
 
 struct VideoElementID: Codable {
     let kind: String
-    let videoId: String
+    var videoId: String
 }
 
 

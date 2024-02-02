@@ -10,49 +10,19 @@ import Kingfisher
 
 struct ComingSoonView: View {
     @ObservedObject var viewModel = ApiManager()
-    let videoElement: [VideoElement] = []
     
     var body: some View {
         NavigationStack{
             ScrollView{
                 VStack(alignment: .leading){
-                    Divider()
                     ForEach(viewModel.upcomingMovies){ film in
-                        HStack{
-                            KFImage(URL(string: "\(basicUrl + (film.poster_path ?? ""))"))
-                                .resizable()
-                                .scaledToFit()
-                                .clipShape(RoundedRectangle(cornerRadius: 20.0))
-                                .frame(width: 200, height: 200)
-                            
-                            
-                            Text(film.original_name ?? film.original_title ?? "")
-                                .font(.title)
-                                .fontWeight(.bold)
-                            
-                            Spacer()
-                            
-                            VStack{
-                                Text("Release date: ")
-                                Text(film.release_date ?? "")
-                                
-                                NavigationLink {
-                                    VideoView(titleName: film.original_name ?? film.original_title ?? "", description: film.overview ?? "", url: film.original_name ?? film.original_title! + "trailer")
-                                       
-                                } label: {
-                                    Text("More")
-                                }
-                              
-
-                            }
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-                            
-
-                            Divider()
+                        Divider()
+                        NavigationLink {
+                            VideoView(film: film)
+                        } label: {
+                            ComingSoonCell(film: film)
                         }
-                        
+                        .buttonStyle(.plain)
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -63,7 +33,6 @@ struct ComingSoonView: View {
                 viewModel.getUpcomingMovies()
             }
         }
-        
     }
 }
 

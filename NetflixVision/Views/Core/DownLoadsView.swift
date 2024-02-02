@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct DownLoadsView: View {
-    @ObservedObject var viewModel = ApiManager()
+    
     var body: some View {
         VStack{
-            Text("downloads")
-        }.onAppear{
-            viewModel.getMovieYoutube(with: "venom trailer")
-            print(viewModel.youtubeSearch)
+           Text("downloadsview")
         }
     }
 }

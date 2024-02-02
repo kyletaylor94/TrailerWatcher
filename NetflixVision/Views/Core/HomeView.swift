@@ -71,7 +71,6 @@ struct HomeView: View {
                         TrendingView(titleName: "Discover", pictures: viewModel.discoverMovies) {
                             viewModel.getDiscoverMovies()
                         }
-                        
                     }
                 }
             }

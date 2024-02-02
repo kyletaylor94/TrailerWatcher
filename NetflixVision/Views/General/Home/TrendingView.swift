@@ -22,19 +22,24 @@ struct TrendingView: View {
             ScrollView(.horizontal, showsIndicators: false){
                 HStack(spacing: 10){
                     ForEach(pictures) { trendingMovies in
-                        KFImage(URL(string: basicUrl + (trendingMovies.poster_path ?? "")))
-                            .onFailure { error in
-                                print("Image download failed: \(error)")
-                                print("Error URL: \(basicUrl + (trendingMovies.poster_path ?? ""))")
-                            }
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 150)
-                            .clipShape(RoundedRectangle(cornerRadius: 3))
+                        NavigationLink {
+                            VideoView(film: trendingMovies)
+                        } label: {
+                            KFImage(URL(string: basicUrl + (trendingMovies.poster_path ?? "")))
+                                .onFailure { error in
+                                    print("Image download failed: \(error)")
+                                    print("Error URL: \(basicUrl + (trendingMovies.poster_path ?? ""))")
+                                }
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                                .shadow(radius: 10)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
-            .shadow(radius: 10)
         }
         .padding()
         .onAppear{
@@ -42,9 +47,3 @@ struct TrendingView: View {
         }
     }
 }
-
-//#Preview {
-//    TrendingView(titleName: "Trending Movies", pictures: viewModel.trendingMovies) {
-//        
-//    }
-//}

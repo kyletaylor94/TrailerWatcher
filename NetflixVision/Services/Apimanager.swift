@@ -121,10 +121,14 @@ class ApiManager: ObservableObject {
     @Published var topRatedMovies: [Title] = []
     
     @Published var search: [Title] = []
-    @Published var youtubeSearch: [VideoElement] = []
     
-    let apikey = "" // you can get your apikey -> https://themoviedb.org/
-    let youtubeApikey = "" //you can get your apikey -> https://console.cloud.google.com/
+    let apikey = ""
+    let youtubeApikey = ""
+    
+    /*
+     you can get your apikey -> https://themoviedb.org/
+     //you can get your apikey -> https://console.cloud.google.com/
+     */
     
     let provider = MoyaProvider<ApiServices>()
     
@@ -248,20 +252,21 @@ class ApiManager: ObservableObject {
         }
     }
     
-    func getMovieYoutube(with query: String) {
-        provider.request(.getMovieYoutube(apikey: youtubeApikey, query: query)) { result in
-            switch result {
-            case .success(let response):
-                print(response.statusCode)
-                do{
-                    let decodedJson = try JSONDecoder().decode(YoutubeSearchResponse.self, from: response.data)
-                    self.youtubeSearch = decodedJson.items
-                } catch {
-                    print(String(describing: error))
-                }
-            case .failure(let error):
-                print(String(describing: error))
-            }
-        }
-    }
+    func getMovieYoutube(with query: String, completed: @escaping ([VideoElement]) -> Void) {
+         provider.request(.getMovieYoutube(apikey: youtubeApikey, query: query)) { result in
+             switch result {
+             case .success(let response):
+                 print(response.statusCode)
+                 print(response.response?.url?.absoluteURL)
+                 do{
+                     let decodedJson = try JSONDecoder().decode(YoutubeSearchResponse.self, from: response.data)
+                     completed(decodedJson.items)
+                 } catch {
+                     print(String(describing: error))
+                 }
+             case .failure(let error):
+                 print(String(describing: error))
+             }
+         }
+     }
 }

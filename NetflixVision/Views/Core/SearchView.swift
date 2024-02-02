@@ -23,7 +23,12 @@ struct SearchView: View {
                 } else {
                     ScrollView{
                         ForEach(viewModel.search){ movie in
-                            MovieRow(movie: movie)
+                            NavigationLink {
+                                VideoView(film: movie)
+                            } label: {
+                                MovieRow(movie: movie)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

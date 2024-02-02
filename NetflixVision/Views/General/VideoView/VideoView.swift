@@ -9,42 +9,48 @@ import SwiftUI
 import WebKit
 
 struct VideoView: View {
-    let titleName: String
-    let description: String
-    let url: String
-    
+    let film: Title
     @StateObject var viewModel = ApiManager()
+    @State private var youtubeSearch: String = ""
     
     var body: some View {
         ScrollView{
-            VStack(alignment: .leading, spacing: 20){
-                WebView(url: URL(string: youtubeUrl + url)!)
-                    .frame(height: 370, alignment: .top)
+            if youtubeSearch.isEmpty {
+                ProgressView()
+            } else {
                 
-                Text(titleName)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal)
+                VStack(alignment: .leading, spacing: 20){
+                    WebView(url: URL(string: youtubeUrl + youtubeSearch)!)
+                        .frame(height: 370, alignment: .top)
+                    
+                    Text(film.original_title ?? film.original_name ?? "")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal)
+                    
+                    Text(film.overview ?? "")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal)
+                    
+                }
                 
-                Text(description)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal)
-                
+                Button(action: {
+                    //
+                }, label: {
+                    Text("Download")
+                })
+                .font(.title3)
+                .foregroundStyle(.red)
             }
-            
-            Button(action: {
-                //
-            }, label: {
-                Text("Download")
-            })
-            .font(.title2)
-            .foregroundStyle(.red)
         }
         .onAppear{
-            viewModel.getMovieYoutube(with: "\(titleName) trailer ")
-            print( viewModel.getMovieYoutube(with: "\(titleName) trailer "))
+            viewModel.getMovieYoutube(with: film.original_title ?? film.original_name ?? "") { videoId in
+                DispatchQueue.main.async {
+                    self.youtubeSearch = videoId[0].id.videoId
+                }
+            }
         }
     }
 }
@@ -61,8 +67,4 @@ struct WebView: UIViewRepresentable {
     func updateUIView(_ uiView: UIViewType, context: Context) {
         //
     }
-}
-
-#Preview {
-    VideoView(titleName: "Venom", description: "Description of Venom", url: "\(youtubeUrl)")
 }
