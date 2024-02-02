@@ -1,4 +1,3 @@
-#Features:
 # 🔍 Explore Current Movies:
 
 Access up-to-date information on the latest releases.
